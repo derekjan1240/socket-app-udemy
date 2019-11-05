@@ -1,0 +1,7 @@
+{
+  "name": "socket.io",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Derek Zhan <derekjan1240@gmail.com>",
+  "license": "MIT"
+}
