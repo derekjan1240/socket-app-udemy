@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat App</title>
+    <link rel="icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQj95iih6aldRX0M6mSQxufshHwpz9ntJJpSkEl0UR57B7BCBZj&s" type="image/x-icon" />
+    <!-- course -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/3.0.1/mustache.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.6.0/qs.min.js"></script>
+    <!-- boostrap4 -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container mt-5">
+        <button class="btn btn-warning" id="locationSendButton">Send Location</button>
+        <div class="input-group mb-3">
+            <input id="msgInput" type="text" class="form-control" placeholder="Massage to send" aria-label="Massage to send" aria-describedby="button-addon2">
+            <div class="input-group-append">
+                <button class="btn btn-outline-info" type="button" id="msgSendButton">Send Msg</button>
+            </div>
+        </div> 
+    </div>
+
+    <div id="message"></div>
+
+    <script id="message-template" type="text/html">
+        <div class="container bg-light">
+            <p class="p-3">{{createAt}}-{{message}}</p>
+        </div>
+    </script>
+
+    <script id="location-message-template" type="text/html">
+        <div class="container bg-light">
+            <p class="p-3">{{createAt}} - <a href="{{url}}">My current location</a></p>
+            <iframe src="{{url}}&z=15&output=embed" width="600" height="450" frameborder="0" style="border:0;" allowfullscreen=""></iframe>
+        </div>
+    </script>
+    
+</body>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/chat.js"></script>
+</html>
