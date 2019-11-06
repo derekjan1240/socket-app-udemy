@@ -9,6 +9,7 @@ const message = document.querySelector('#message');
 // Templates
 const messageTemplate = document.querySelector('#message-template').innerHTML;
 const locationMessageTemplate = document.querySelector('#location-message-template').innerHTML;
+const sidebarTemplate = document.querySelector('#sidebar-template').innerHTML;
 
 // Options
 const {userName, room} = Qs.parse(location.search, {ignoreQueryPrefix: true});
@@ -16,6 +17,7 @@ const {userName, room} = Qs.parse(location.search, {ignoreQueryPrefix: true});
 socket.on('message', (msg)=>{
     console.log(msg);
     const html = Mustache.render(messageTemplate, {
+        userName: msg.userName,
         message: msg.text,
         createAt: moment(msg.createAt).format('lll')
     });
@@ -25,10 +27,20 @@ socket.on('message', (msg)=>{
 socket.on('locationMassage', (msg)=>{
     console.log(msg);
     const html = Mustache.render(locationMessageTemplate, {
+        userName: msg.userName,
         url: msg.url,
         createAt: moment(msg.createAt).format('lll')
     });
     message.insertAdjacentHTML('beforeend', html);
+});
+
+socket.on('roomData', ({room, users})=>{
+    console.log({room, users});
+    const html = Mustache.render(sidebarTemplate, {
+        room,
+        users
+    });
+    document.querySelector('#sidebar').innerHTML = html;
 });
 
 document.addEventListener("DOMContentLoaded", ()=> {
@@ -37,15 +49,17 @@ document.addEventListener("DOMContentLoaded", ()=> {
         msgSendButton.setAttribute("disabled", true);
 
         const msg = msgInput.value;
-        socket.emit('sendMsg', msg, (err)=>{
-            msgSendButton.removeAttribute("disabled");
-            if(err){
-                return console.log(err)
-            }
-            // reset msg input 
-            msgInput.value = '';
-            console.log('The message was delivered!');
-        });
+        if(msg){
+            socket.emit('sendMsg', msg, (err)=>{    
+                if(err){
+                    return console.log(err)
+                }
+                // reset msg input 
+                msgInput.value = '';
+                console.log('The message was delivered!');
+            });
+        }
+        msgSendButton.removeAttribute("disabled");
     });
 
     locationSendButton.addEventListener('click',(e)=>{
@@ -67,4 +81,9 @@ document.addEventListener("DOMContentLoaded", ()=> {
     });
 }); 
 
-socket.emit('join', {userName, room});
+socket.emit('join', {userName, room}, (error)=>{
+    if(error){
+        alert(error);
+        location.href='/';
+    }
+});

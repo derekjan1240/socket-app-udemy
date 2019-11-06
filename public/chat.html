@@ -13,9 +13,11 @@
 </head>
 <body>
     <div class="container mt-5">
+        <div id="sidebar"></div>
+        <a href="/" class="btn btn-danger">Leave</a>
         <button class="btn btn-warning" id="locationSendButton">Send Location</button>
         <div class="input-group mb-3">
-            <input id="msgInput" type="text" class="form-control" placeholder="Massage to send" aria-label="Massage to send" aria-describedby="button-addon2">
+            <input id="msgInput" type="text" class="form-control" placeholder="Massage to send" aria-label="Massage to send" aria-describedby="button-addon2" autocomplete="off">
             <div class="input-group-append">
                 <button class="btn btn-outline-info" type="button" id="msgSendButton">Send Msg</button>
             </div>
@@ -26,15 +28,25 @@
 
     <script id="message-template" type="text/html">
         <div class="container bg-light">
-            <p class="p-3">{{createAt}}-{{message}}</p>
+            <p class="p-3">{{userName}} - {{createAt}} - {{message}}</p>
         </div>
     </script>
 
     <script id="location-message-template" type="text/html">
         <div class="container bg-light">
-            <p class="p-3">{{createAt}} - <a href="{{url}}">My current location</a></p>
+            <p class="p-3">{{userName}} - {{createAt}} - <a href="{{url}}">My current location</a></p>
             <iframe src="{{url}}&z=15&output=embed" width="600" height="450" frameborder="0" style="border:0;" allowfullscreen=""></iframe>
         </div>
+    </script>
+
+    <script id="sidebar-template" type="text/html">
+        <h2>{{room}}</h2>
+        <h3>Users</h3>
+        <ul>
+            {{#users}}
+                <li>{{userName}}</li>
+            {{/users}}
+        </ul>
     </script>
     
 </body>

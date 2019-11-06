@@ -16,7 +16,7 @@ const addUser = ({id, userName, room}) =>{
     const existingUser = users.find((user)=>{
         return user.room === room && user.userName === userName
     });
-
+    
     // Vaildate userName
     if(existingUser){
         return {
